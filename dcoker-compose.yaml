@@ -1,0 +1,54 @@
+version: "3"
+services:
+  laravel:
+    container_name: laravel
+    build: ./php/81
+    ports:
+      - "8000:8000"
+    networks:
+      - php-test
+    volumes:
+      - ../../../workspace:/var/www
+      - ./logs/php/81:/var/log/php
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/laravel/artisan", "serv", "--host=0.0.0.0", "--port=8000"]
+
+  laravel-octane:
+    container_name: laravel-octane
+    build: ./php/81
+    ports:
+      - "8000:8000"
+    networks:
+      - php-test
+    volumes:
+      - ../../../workspace:/var/www
+      - ./logs/php/81:/var/log/php
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/laravel/artisan", "octane:start", "--watch", "--host=0.0.0.0"]
+
+  webman:
+    container_name: webman
+    build: ./php/81
+    ports:
+      - "8000:8000"
+    networks:
+      - php-test
+    volumes:
+      - ../../../workspace:/var/www
+      - ./logs/php/81:/var/log/php
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/webman", "start.php", "start"]
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    networks:
+      - php-test
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./config/mysql:/etc/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456

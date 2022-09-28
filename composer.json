@@ -1,0 +1,5 @@
+{
+    "require": {
+        "webman/console": "^1.2"
+    }
+}
