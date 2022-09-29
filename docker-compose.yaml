@@ -1,0 +1,45 @@
+version: "3"
+services:
+  laravel:
+    image: skarner2016/php81
+    container_name: php-test-laravel
+    ports:
+      - "8801:8000"
+    volumes:
+      - ../../../workspace:/var/www
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/laravel/artisan", "serv", "--host=0.0.0.0", "--port=8000"]
+
+  laravel-octane:
+    image: skarner2016/php81
+    container_name: php-test-laravel-octane
+    ports:
+      - "8802:8000"
+    volumes:
+      - ../../../workspace:/var/www
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/laravel/artisan", "octane:start", "--host=0.0.0.0", '--port=8000']
+
+  webman:
+    image: skarner2016/php81
+    container_name: php-test-webman
+    ports:
+      - "8803:8787"
+    volumes:
+      - ../../../workspace:/var/www
+      - ./logs/php/81:/var/log/php
+    working_dir: /var/www
+    command: ["/usr/local/bin/php", "/var/www/skarner2016/php-test/webman/start.php", "start"]
+
+  mysql:
+    container_name: php-test-mysql
+    image: mysql:latest
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./config/mysql:/etc/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
