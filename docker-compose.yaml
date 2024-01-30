@@ -14,17 +14,53 @@ services:
     ports:
       - "80:80"
 
-  app:
+  laravel:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app
-    ports:
-      - "9000:9000"
+    container_name: laravel
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai # 你的时区
     stdin_open: true
     tty: true
     restart: always
     volumes:
       - ./:/var/www
-      - ./run/php:/run/php
-#      - ./www.conf:/etc/php/8.2/fpm/pool.d/www.conf
+
+  octane:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: octane
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai # 你的时区
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    restart: always
+    volumes:
+      - ./:/var/www
+    command: ["/usr/local/bin/php", "/var/www/laravel/artisan", "octane:start", "--server=roadrunner", "--host=0.0.0.0", "--port=8000"]
+
+  webman:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webman
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai # 你的时区
+    ports:
+      - "8001:8001"
+    stdin_open: true
+    tty: true
+    restart: always
+    volumes:
+      - ./:/var/www
+    command: ["/usr/local/bin/php", "/var/www/webman/start.php", "start"]
