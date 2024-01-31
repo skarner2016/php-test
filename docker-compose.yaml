@@ -45,7 +45,7 @@ services:
     restart: always
     volumes:
       - ./:/var/www
-    command: ["/usr/local/bin/php", "/var/www/laravel/artisan", "octane:start", "--server=roadrunner", "--host=0.0.0.0", "--port=8000"]
+    command: ["/usr/local/bin/php", "/var/www/laravel/artisan", "octane:start", "--server=roadrunner", "--workers=8", "--host=0.0.0.0", "--port=8000"]
 
   webman:
     build:
