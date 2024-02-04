@@ -16,5 +16,9 @@ RUN docker-php-ext-install sockets pcntl
 # 安装 git unzip (安装laravel需要)
 RUN apt install git unzip -y
 
+# 安装 swoole
+RUN pecl install swoole \
+    && docker-php-ext-enable swoole
+
 # 安装 composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
