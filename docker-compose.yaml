@@ -64,3 +64,21 @@ services:
     volumes:
       - ./:/var/www
     command: ["/usr/local/bin/php", "/var/www/webman/start.php", "start"]
+
+  adapterman:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adapterman
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai # 你的时区
+    ports:
+      - "8002:8002"
+    stdin_open: true
+    tty: true
+    restart: always
+    volumes:
+      - ./:/var/www
+    command: [ "/usr/local/bin/php", "/var/www/laravel/server.php", "start" ]
